@@ -3,33 +3,75 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>🌍 상식·넌센스 퀴즈</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<title>20문제 상식·넌센스 퀴즈</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#f3f6fb;color:#172033;font-family:Arial,"Noto Sans KR",sans-serif}.wrap{max-width:850px;margin:auto;padding:18px}
-.head,.card{border-radius:22px}.head{background:#172033;color:#fff;padding:20px 24px;margin-bottom:16px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px}.head h1{margin:0;font-size:25px}.count{font-weight:800;white-space:nowrap}.progress{height:8px;background:#ffffff2b;border-radius:99px;margin-top:18px}.bar{height:100%;background:#7dd3fc;width:0;border-radius:99px}
-.card{background:#fff;padding:25px;box-shadow:0 8px 25px #17203312}.badge{display:inline-block;padding:7px 11px;border-radius:99px;background:#e8f1ff;color:#2463d4;font-weight:800}.q{font-size:24px;font-weight:800;margin:22px 0}.opts{display:grid;gap:11px}.opt,.btn{border:0;border-radius:14px;padding:15px;font-size:16px;cursor:pointer}.opt{text-align:left;background:#f4f6fa}.opt:disabled{cursor:default}.correct{background:#d9f7e5!important;border:2px solid #39a96b}.wrong{background:#ffe1e1!important;border:2px solid #df5656}.input{width:100%;padding:15px;border:2px solid #d8deea;border-radius:14px;font-size:17px}.btn{background:#172033;color:#fff;width:100%;margin-top:16px}.feed{display:none;margin-top:18px;padding:17px;border-radius:15px;background:#f6f8fc}.map{display:none;margin-top:16px;border-radius:18px;overflow:hidden;border:1px solid #dfe5ef}.maptitle{padding:12px 15px;font-weight:800}.realmap{height:330px}.result{text-align:center}.score{font-size:54px;font-weight:900}.review{text-align:left;margin-top:24px}.review div{padding:12px;border-bottom:1px solid #e5e9f0}.small{font-size:13px;color:#697386}
+*{box-sizing:border-box}
+body{margin:0;background:#eef2f7;color:#172033;font-family:Arial,"Noto Sans KR",sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:18px}
+.header{background:#172033;color:#fff;border-radius:22px;padding:20px 24px;margin-bottom:16px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+h1{font-size:25px;margin:0}.count{font-weight:800;white-space:nowrap}
+.progress{height:8px;background:#ffffff2b;border-radius:99px;margin-top:18px}
+.bar{height:100%;width:0;background:#7dd3fc;border-radius:99px;transition:.2s}
+.card{background:#fff;border-radius:22px;padding:25px;box-shadow:0 8px 25px #17203312}
+.badge{display:inline-block;padding:7px 11px;border-radius:999px;background:#e8f1ff;color:#2463d4;font-weight:800}
+.q{font-size:24px;font-weight:800;margin:22px 0}
+.options{display:grid;gap:11px}.option,.btn{border:0;border-radius:14px;padding:15px;font-size:16px;cursor:pointer}
+.option{text-align:left;background:#f4f6fa}.option:disabled{cursor:default}
+.correct{background:#d9f7e5!important;border:2px solid #39a96b}.wrong{background:#ffe1e1!important;border:2px solid #df5656}
+.input{width:100%;padding:15px;border:2px solid #d8deea;border-radius:14px;font-size:17px}
+.btn{background:#172033;color:#fff;width:100%;margin-top:16px}
+.feed{display:none;margin-top:18px;padding:17px;border-radius:15px;background:#f6f8fc}
+.mapbox{display:none;margin-top:16px;border-radius:18px;overflow:hidden;border:1px solid #dfe5ef;background:#eef3f8}
+.maptitle{padding:12px 15px;background:#fff;font-weight:800}.world{position:relative;width:100%;height:330px}
+.world svg{width:100%;height:100%;display:block}.marker{position:absolute;width:18px;height:18px;border-radius:50%;background:#e63946;border:3px solid #fff;box-shadow:0 2px 8px #17203355;transform:translate(-50%,-50%)}
+.label{position:absolute;background:#fff;padding:4px 8px;border-radius:8px;font-size:13px;font-weight:800;box-shadow:0 2px 8px #17203322;white-space:nowrap}
+.result{text-align:center}.score{font-size:54px;font-weight:900}.review{text-align:left;margin-top:24px}
+.review div{padding:12px;border-bottom:1px solid #e5e9f0}.small{font-size:13px;color:#697386}
 </style>
 </head>
-<body><div class="wrap">
-<header class="head"><div class="top"><h1>🌍 20문제 상식·넌센스 퀴즈</h1><div id="userCount" class="count">👥 역대 이용자 0명</div></div><div class="progress"><div id="bar" class="bar"></div></div></header>
-<div id="app"></div></div>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<body>
+<div class="wrap">
+<header class="header">
+  <div class="top"><h1>🌍 20문제 상식·넌센스 퀴즈</h1><div id="userCount" class="count">👥 역대 이용자 0명</div></div>
+  <div class="progress"><div id="bar" class="bar"></div></div>
+</header>
+<div id="app"></div>
+</div>
+
 <script>
-const qs=[{"q":"세계에서 가장 높은 산은?","type":"short","answer":"에베레스트산","accepted":["에베레스트산","에베레스트"],"exp":"세계에서 가장 높은 산은 에베레스트산입니다.","map":[27.99,86.93,6,"에베레스트산"]},{"q":"세계에서 가장 큰 대륙은?","type":"mc","answer":"아시아","choices":["아프리카","유럽","아시아","북아메리카"],"correct":2,"exp":"아시아는 세계에서 가장 큰 대륙입니다.","map":[35,100,2.7,"아시아"]},{"q":"세계에서 가장 긴 강으로 일반적으로 알려진 강은?","type":"mc","answer":"나일강","choices":["아마존강","나일강","양쯔강","미시시피강"],"correct":1,"exp":"나일강은 전통적으로 세계에서 가장 긴 강으로 알려져 있습니다.","map":[15.5,31.5,4.2,"나일강"]},{"q":"겨울철에 정전기가 더 잘 발생하는 가장 큰 이유는?","type":"mc","answer":"공기가 건조하기 때문에","choices":["기온이 높기 때문에","공기가 건조하기 때문에","비가 많이 오기 때문에","바람이 약하기 때문에"],"correct":1,"exp":"겨울에는 공기가 건조해 정전기가 잘 발생합니다."},{"q":"오리가 얼면?","type":"short","answer":"언덕","accepted":["언덕"],"exp":"넌센스 퀴즈! 오리가 얼면 '언덕'입니다. 😆"},{"q":"남아메리카에서 가장 큰 나라는?","type":"mc","answer":"브라질","choices":["아르헨티나","페루","브라질","콜롬비아"],"correct":2,"exp":"브라질은 남아메리카에서 가장 큰 나라입니다.","map":[-10,-52,3.5,"브라질"]},{"q":"세계에서 가장 큰 섬은?","type":"mc","answer":"그린란드","choices":["마다가스카르","그린란드","뉴기니섬","보르네오섬"],"correct":1,"exp":"그린란드는 세계에서 가장 큰 섬입니다.","map":[72,-40,3,"그린란드"]},{"q":"세계에서 가장 큰 호수는?","type":"mc","answer":"카스피해","choices":["바이칼호","빅토리아호","슈피리어호","카스피해"],"correct":3,"exp":"카스피해는 지리적으로 세계에서 가장 큰 호수로 분류됩니다.","map":[41.8,50,4,"카스피해"]},{"q":"우리나라에서 가장 긴 강은?","type":"short","answer":"낙동강","accepted":["낙동강"],"exp":"낙동강은 우리나라에서 가장 긴 강입니다.","map":[35.5,128.8,7,"낙동강"]},{"q":"세계에서 가장 많은 나라와 국경을 맞대고 있는 나라 중 하나는?","type":"mc","answer":"중국","choices":["브라질","중국","일본","이집트"],"correct":1,"exp":"중국은 러시아와 함께 육지로 14개 나라와 국경을 맞대고 있는 나라 중 하나입니다.","map":[35.9,103.8,4,"중국"]},{"q":"세계에서 가장 깊은 해구는?","type":"mc","answer":"마리아나 해구","choices":["통가 해구","일본 해구","마리아나 해구","페루-칠레 해구"],"correct":2,"exp":"마리아나 해구는 서태평양에 있으며 가장 깊은 곳은 약 11km입니다.","map":[11.35,142.2,4,"마리아나 해구"]},{"q":"유럽과 아시아의 경계로 알려진 산맥은?","type":"mc","answer":"우랄산맥","choices":["히말라야산맥","알프스산맥","안데스산맥","우랄산맥"],"correct":3,"exp":"우랄산맥은 유럽과 아시아의 경계 중 하나로 여겨집니다.","map":[60,60,3.5,"우랄산맥"]},{"q":"우리나라의 최남단에 위치한 섬은?","type":"mc","answer":"마라도","choices":["거문도","마라도","울릉도","제주도"],"correct":1,"exp":"마라도는 대한민국의 최남단에 위치한 섬입니다.","map":[33.12,126.27,10,"마라도"]},{"q":"세계에서 가장 긴 산맥은?","type":"mc","answer":"안데스산맥","choices":["안데스산맥","로키산맥","알프스산맥","히말라야산맥"],"correct":0,"exp":"안데스산맥은 세계에서 가장 긴 대륙 산맥입니다.","map":[-15,-70,3.5,"안데스산맥"]},{"q":"28일이 있는 달은?","type":"short","answer":"모든 달","accepted":["모든 달","모든달"],"exp":"넌센스 퀴즈! 모든 달에는 최소 28일이 있습니다. 😆"},{"q":"세계에서 가장 넓은 사막은?","type":"short","answer":"남극 사막","accepted":["남극 사막","남극사막","남극"],"exp":"남극은 강수량이 매우 적어 거대한 사막으로 분류됩니다.","map":[-82,0,2.5,"남극 사막"]},{"q":"세계에서 가장 큰 내륙국은?","type":"mc","answer":"카자흐스탄","choices":["몽골","볼리비아","카자흐스탄","차드"],"correct":2,"exp":"카자흐스탄은 세계에서 가장 큰 내륙국입니다.","map":[48,67,4,"카자흐스탄"]},{"q":"첨성대를 쌓은 돌의 개수는?","type":"mc","answer":"365개","choices":["325개","285개","365개","405개"],"correct":2,"exp":"첨성대는 약 365개의 돌로 쌓았다고 흔히 알려져 있습니다.","map":[35.84,129.22,12,"첨성대 · 경주"]},{"q":"세상에서 가장 빠른 동물은?","type":"mc","answer":"송골매","choices":["치타","돛새치","타조","송골매"],"correct":3,"exp":"송골매는 급강하할 때 매우 높은 속도에 도달합니다."},{"q":"세계에서 가장 높은 폭포로 알려진 폭포는?","type":"mc","answer":"엔젤 폭포","choices":["나이아가라 폭포","엔젤 폭포","빅토리아 폭포","이과수 폭포"],"correct":1,"exp":"베네수엘라의 엔젤 폭포는 세계에서 가장 높은 폭포로 알려져 있습니다.","map":[5.97,-62.54,6,"엔젤 폭포"]}];
-let i=0,score=0,done=false,userName="게스트",map;
-const app=document.getElementById("app"),bar=document.getElementById("bar"),countEl=document.getElementById("userCount");
+const qs=[{"q":"세계에서 가장 높은 산은?","type":"short","answer":"에베레스트산","accepted":["에베레스트산","에베레스트"],"exp":"세계에서 가장 높은 산은 에베레스트산입니다.","map":[27.99,86.93,"에베레스트산"]},{"q":"세계에서 가장 큰 대륙은?","type":"mc","answer":"아시아","choices":["아프리카","유럽","아시아","북아메리카"],"correct":2,"exp":"아시아는 세계에서 가장 큰 대륙입니다.","map":[35,100,"아시아"]},{"q":"세계에서 가장 긴 강으로 일반적으로 알려진 강은?","type":"mc","answer":"나일강","choices":["아마존강","나일강","양쯔강","미시시피강"],"correct":1,"exp":"나일강은 전통적으로 세계에서 가장 긴 강으로 알려져 있습니다.","map":[15.5,31.5,"나일강"]},{"q":"겨울철에 정전기가 더 잘 발생하는 가장 큰 이유는?","type":"mc","answer":"공기가 건조하기 때문에","choices":["기온이 높기 때문에","공기가 건조하기 때문에","비가 많이 오기 때문에","바람이 약하기 때문에"],"correct":1,"exp":"겨울에는 공기가 건조해 정전기가 잘 발생합니다."},{"q":"오리가 얼면?","type":"short","answer":"언덕","accepted":["언덕"],"exp":"넌센스 퀴즈! 오리가 얼면 '언덕'입니다. 😆"},{"q":"남아메리카에서 가장 큰 나라는?","type":"mc","answer":"브라질","choices":["아르헨티나","페루","브라질","콜롬비아"],"correct":2,"exp":"브라질은 남아메리카에서 가장 큰 나라입니다.","map":[-10,-52,"브라질"]},{"q":"세계에서 가장 큰 섬은?","type":"mc","answer":"그린란드","choices":["마다가스카르","그린란드","뉴기니섬","보르네오섬"],"correct":1,"exp":"그린란드는 세계에서 가장 큰 섬입니다.","map":[72,-40,"그린란드"]},{"q":"세계에서 가장 큰 호수는?","type":"mc","answer":"카스피해","choices":["바이칼호","빅토리아호","슈피리어호","카스피해"],"correct":3,"exp":"카스피해는 지리적으로 세계에서 가장 큰 호수로 분류됩니다.","map":[41.8,50,"카스피해"]},{"q":"우리나라에서 가장 긴 강은?","type":"short","answer":"낙동강","accepted":["낙동강"],"exp":"낙동강은 우리나라에서 가장 긴 강입니다.","map":[35.5,128.8,"낙동강"]},{"q":"세계에서 가장 많은 나라와 국경을 맞대고 있는 나라 중 하나는?","type":"mc","answer":"중국","choices":["브라질","중국","일본","이집트"],"correct":1,"exp":"중국은 러시아와 함께 육지로 14개 나라와 국경을 맞대고 있는 나라 중 하나입니다.","map":[35.9,103.8,"중국"]},{"q":"세계에서 가장 깊은 해구는?","type":"mc","answer":"마리아나 해구","choices":["통가 해구","일본 해구","마리아나 해구","페루-칠레 해구"],"correct":2,"exp":"마리아나 해구는 서태평양에 있으며 가장 깊은 곳은 약 11km입니다.","map":[11.35,142.2,"마리아나 해구"]},{"q":"유럽과 아시아의 경계로 알려진 산맥은?","type":"mc","answer":"우랄산맥","choices":["히말라야산맥","알프스산맥","안데스산맥","우랄산맥"],"correct":3,"exp":"우랄산맥은 유럽과 아시아의 경계 중 하나로 여겨집니다.","map":[60,60,"우랄산맥"]},{"q":"우리나라의 최남단에 위치한 섬은?","type":"mc","answer":"마라도","choices":["거문도","마라도","울릉도","제주도"],"correct":1,"exp":"마라도는 대한민국의 최남단에 위치한 섬입니다.","map":[33.12,126.27,"마라도"]},{"q":"세계에서 가장 긴 산맥은?","type":"mc","answer":"안데스산맥","choices":["안데스산맥","로키산맥","알프스산맥","히말라야산맥"],"correct":0,"exp":"안데스산맥은 세계에서 가장 긴 대륙 산맥입니다.","map":[-15,-70,"안데스산맥"]},{"q":"28일이 있는 달은?","type":"short","answer":"모든 달","accepted":["모든 달","모든달"],"exp":"넌센스 퀴즈! 모든 달에는 최소 28일이 있습니다. 😆"},{"q":"세계에서 가장 넓은 사막은?","type":"short","answer":"남극 사막","accepted":["남극 사막","남극사막","남극"],"exp":"남극은 강수량이 매우 적어 거대한 사막으로 분류됩니다.","map":[-82,0,"남극 사막"]},{"q":"세계에서 가장 큰 내륙국은?","type":"mc","answer":"카자흐스탄","choices":["몽골","볼리비아","카자흐스탄","차드"],"correct":2,"exp":"카자흐스탄은 세계에서 가장 큰 내륙국입니다.","map":[48,67,"카자흐스탄"]},{"q":"첨성대를 쌓은 돌의 개수는?","type":"mc","answer":"365개","choices":["325개","285개","365개","405개"],"correct":2,"exp":"첨성대는 약 365개의 돌로 쌓았다고 흔히 알려져 있습니다.","map":[35.84,129.22,"첨성대 · 경주"]},{"q":"세상에서 가장 빠른 동물은?","type":"mc","answer":"송골매","choices":["치타","돛새치","타조","송골매"],"correct":3,"exp":"송골매는 급강하할 때 매우 높은 속도에 도달합니다."},{"q":"세계에서 가장 높은 폭포로 알려진 폭포는?","type":"mc","answer":"엔젤 폭포","choices":["나이아가라 폭포","엔젤 폭포","빅토리아 폭포","이과수 폭포"],"correct":1,"exp":"베네수엘라의 엔젤 폭포는 세계에서 가장 높은 폭포로 알려져 있습니다.","map":[5.97,-62.54,"엔젤 폭포"]}];
+let i=0,score=0,done=false,userName="게스트";
+
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function norm(s){return String(s).normalize("NFKC").replace(/[\s\p{P}\p{S}]/gu,"").toLowerCase()}
-function localCount(){const a=JSON.parse(localStorage.getItem("quizUsers")||"[]");countEl.textContent="👥 역대 이용자 "+a.length+"명"}
+function localCount(){const a=JSON.parse(localStorage.getItem("quizUsers")||"[]");document.getElementById("userCount").textContent="👥 역대 이용자 "+a.length+"명"}
 function registerUser(n){if(n==="게스트")return;const a=JSON.parse(localStorage.getItem("quizUsers")||"[]");if(!a.includes(n)){a.push(n);localStorage.setItem("quizUsers",JSON.stringify(a))}localCount()}
-function home(){app.innerHTML='<div class="card"><h2>준비됐나요? 😎</h2><label style="font-weight:800;display:block;margin:16px 0 8px">👤 이용자 닉네임</label><input id="name" class="input" maxlength="20" placeholder="닉네임을 입력하세요"><p class="small">같은 브라우저에서는 같은 닉네임을 한 번만 집계합니다.</p><button class="btn" onclick="start()">퀴즈 시작</button></div>'}
 function start(){userName=(document.getElementById("name").value||"").trim()||"게스트";registerUser(userName);i=0;score=0;show()}
-function show(){done=false;const x=qs[i];bar.style.width=((i+1)/20*100)+"%";const body=x.type==="short"?'<input id="ans" class="input" placeholder="정답을 입력하세요"><button class="btn" onclick="shortAns()">정답 확인</button>':'<div class="opts">'+x.choices.map((v,j)=>'<button class="opt" onclick="pick('+j+')">'+String.fromCharCode(9312+j)+". "+esc(v)+"</button>").join("")+"</div>";app.innerHTML='<div class="card"><div style="display:flex;justify-content:space-between;gap:10px"><span class="badge">'+(i+1)+" / 20</span><span class="badge">👤 "+esc(userName)+'</span></div><div class="q">'+esc(x.q)+'</div>'+body+'<div class="feed" id="feed"></div><div class="map" id="mapbox"><div class="maptitle">🗺️ 실제 세계 지도 · '+(x.map?esc(x.map[3]):"")+'</div><div id="realmap" class="realmap"></div></div><button class="btn" id="next" style="display:none" onclick="nextQuestion()">'+(i===19?"결과 보기":"다음 문제")+"</button></div>";if(x.type==="short")document.getElementById("ans").addEventListener("keydown",e=>{if(e.key==="Enter")shortAns()})}
-function finish(ok,my){if(done)return;done=true;const x=qs[i];if(ok)score++;const f=document.getElementById("feed");f.style.display="block";f.innerHTML="<b>"+(ok?"🎉 정답!":"📚 오답")+"</b><p>"+(ok?"정답입니다!":"정답은 <b>"+esc(x.answer)+"</b>입니다.")+"</p><p>"+esc(x.exp)+"</p>";if(x.map){document.getElementById("mapbox").style.display="block";setTimeout(()=>{map=L.map("realmap").setView([x.map[0],x.map[1]],x.map[2]);L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OpenStreetMap contributors"}).addTo(map);L.marker([x.map[0],x.map[1]]).addTo(map).bindPopup("<b>"+esc(x.map[3])+"</b>").openPopup()},30)}document.getElementById("next").style.display="block"}
-function pick(j){const x=qs[i],b=document.querySelectorAll(".opt");b[j].classList.add(j===x.correct?"correct":"wrong");if(j!==x.correct)b[x.correct].classList.add("correct");b.forEach(v=>v.disabled=true);finish(j===x.correct,x.choices[j])}
-function shortAns(){const v=document.getElementById("ans").value.trim();if(!v)return;document.getElementById("ans").disabled=true;finish(x=qs[i].accepted.some(a=>norm(v)===norm(a)),v)}
+function home(){document.getElementById("app").innerHTML='<div class="card"><h2>준비됐나요? 😎</h2><label style="display:block;font-weight:800;margin:16px 0 8px">👤 이용자 닉네임</label><input id="name" class="input" maxlength="20" placeholder="닉네임을 입력하세요"><p class="small">같은 브라우저에서는 같은 닉네임을 한 번만 집계합니다.</p><button class="btn" onclick="start()">퀴즈 시작</button></div>'}
+function drawMap(x){
+ const h=document.getElementById("realmap");
+ if(!h||!x.map)return;
+ const lon=x.map[1],lat=x.map[0],px=Math.max(2,Math.min(98,(lon+180)/360*100)),py=Math.max(5,Math.min(95,(90-lat)/150*100));
+ h.innerHTML='<div class="world"><svg viewBox="0 0 1000 520" aria-label="세계 지도"><rect width="1000" height="520" fill="#eef3f8"/><g fill="#d7e0e8" stroke="#81909f" stroke-width="1"><path d="M70 110l36-25 42 9 27 24 37 12 26 34-14 21-40-5-18 18-37-8-20-31-28-14z"/><path d="M212 174l33-14 30 10 12 24-21 17-16 38-18 53-23 42-19-10 7-46-12-42 10-40z"/><path d="M335 91l24-12 30 7 15 25-9 22 34 11 13 28-29 9-20-16-26 5-19-26z"/><path d="M412 117l51-20 69 8 44 27 12 33-31 20-9 29-29 6-24-23-47-9-27-25z"/><path d="M498 223l39-11 42 14 25 29 17 43-17 45-28 32-30-16-4-36-20-37-24-28z"/><path d="M652 119l42-18 57 5 54 24 30 35-15 20-46-2-25 18-39-10-27-30z"/><path d="M747 208l36-7 28 15 10 24-23 19-39-5-22-19z"/><path d="M780 283l33 4 26 22 17 36-29 6-19-23-28-9z"/><path d="M125 397l40-14 35 15 12 25-30 21-36-8z"/><path d="M875 376l45 7 25 23-18 25-42-2-24-18z"/></g><g stroke="#c9d2db" stroke-width="1" opacity=".7"><path d="M0 130H1000M0 260H1000M0 390H1000"/><path d="M166 0V520M333 0V520M500 0V520M666 0V520M833 0V520"/></g></svg><div class="marker" style="left:'+px+'%;top:'+py+'%"></div><div class="label" style="left:'+Math.min(82,px+2)+'%;top:'+Math.max(3,py-6)+'%">'+esc(x.map[2])+'</div></div>'
+}
+function finish(ok,my){
+ if(done)return;done=true;const x=qs[i];if(ok)score++;
+ const f=document.getElementById("feed");f.style.display="block";f.innerHTML='<b>'+(ok?"🎉 정답!":"📚 오답")+'</b><p>'+(ok?"정답입니다!":"정답은 <b>"+esc(x.answer)+"</b>입니다.")+'</p><p>'+esc(x.exp)+'</p>';
+ if(x.map){document.getElementById("mapbox").style.display="block";drawMap(x)}
+ document.getElementById("next").style.display="block"
+}
+function pick(j){const x=qs[i],bs=document.querySelectorAll(".option");bs[j].classList.add(j===x.correct?"correct":"wrong");if(j!==x.correct)bs[x.correct].classList.add("correct");bs.forEach(b=>b.disabled=true);finish(j===x.correct,x.choices[j])}
+function shortAns(){const v=document.getElementById("ans").value.trim();if(!v)return;document.getElementById("ans").disabled=true;finish(qs[i].accepted.some(a=>norm(v)===norm(a)),v)}
 function nextQuestion(){i++;if(i<20)show();else result()}
+function show(){
+ const x=qs[i];bar.style.width=((i+1)/20*100)+"%";
+ const body=x.type==="short"?'<input id="ans" class="input" placeholder="정답을 입력하세요"><button class="btn" onclick="shortAns()">정답 확인</button>':'<div class="options">'+x.choices.map((v,j)=>'<button class="option" onclick="pick('+j+')">'+String.fromCharCode(9312+j)+". "+esc(v)+"</button>").join("")+"</div>";
+ app.innerHTML='<div class="card"><div style="display:flex;justify-content:space-between;gap:10px"><span class="badge">'+(i+1)+" / 20</span><span class="badge">👤 "+esc(userName)+'</span></div><div class="q">'+esc(x.q)+'</div>'+body+'<div class="feed" id="feed"></div><div class="mapbox" id="mapbox"><div class="maptitle">🗺️ 실제 세계 지도 · '+(x.map?esc(x.map[2]):"")+'</div><div id="realmap" class="realmap"></div></div><button class="btn" id="next" style="display:none" onclick="nextQuestion()">'+(i===19?"결과 보기":"다음 문제")+"</button></div>"
+ if(x.type==="short")document.getElementById("ans").addEventListener("keydown",e=>{if(e.key==="Enter")shortAns()})
+}
 function result(){bar.style.width="100%";app.innerHTML='<div class="card result"><h2>퀴즈 결과</h2><div style="font-weight:800">👤 '+esc(userName)+'</div><div class="score">'+score+" / 20</div><button class="btn" onclick="start()">다시 풀기</button></div>"}
 localCount();home();
-</script></body></html>
+</script>
+</body>
+</html>
