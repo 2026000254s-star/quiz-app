@@ -17,7 +17,8 @@ function safeSet(a){try{localStorage.setItem("quizUsers",JSON.stringify(a))}catc
 function localCount(){document.getElementById("userCount").textContent="👥 역대 이용자 "+safeGet().length+"명"}
 function registerUser(n){if(n==="게스트")return;var a=safeGet();if(a.indexOf(n)<0){a.push(n);safeSet(a)}localCount()}
 function home(){
- document.getElementById("app").innerHTML='<div class="card"><h2>준비됐나요? 😎</h2><label style="display:block;font-weight:800;margin:16px 0 8px">👤 이용자 닉네임</label><input id="name" class="input" maxlength="20" placeholder="닉네임을 입력하세요"><p class="small">같은 닉네임은 한 기기에서 한 번만 집계됩니다.</p><button class="btn" id="startBtn" type="button" onclick="window.startQuiz()">퀴즈 시작</button></div>';
+ document.getElementById("app").innerHTML='<div class="card"><h2>준비됐나요? 😎</h2><label style="display:block;font-weight:800;margin:16px 0 8px">👤 이용자 닉네임</label><input id="name" class="input" maxlength="20" placeholder="닉네임을 입력하세요"><p class="small">같은 닉네임은 한 기기에서 한 번만 집계됩니다.</p><button class="btn" id="startBtn" type="button">퀴즈 시작</button></div>';
+ document.getElementById("startBtn").addEventListener("click",start);
 }
 function start(){
  try {
